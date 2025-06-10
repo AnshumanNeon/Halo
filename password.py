@@ -34,8 +34,8 @@ def create_new_password(cursor, vault_key, userid, label, description):
     print("Password created for your user successfully!!")
     if input("Continue..."): return
 
-def get_password(cursor, vault_key, label):
-    cursor.execute("select protected_password, password_hash, nonce1, nonce2 from passwords where label=%s", (label,))
+def get_password(cursor, vault_key, label, userid):
+    cursor.execute("select protected_password, password_hash, nonce1, nonce2 from passwords where label=%s and userid=%s", (label, userid))
 
     x = cursor.fetchall()[0]
 

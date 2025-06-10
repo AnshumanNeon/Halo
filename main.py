@@ -71,7 +71,7 @@ def usage_options():
         show_all_passwords(cursor, data[0])
     elif choice == 2:
         label = input("Enter the name/label for your password: ")
-        get_password(cursor, data[1], label)
+        get_password(cursor, data[1], label, data[0])
     elif choice == 3:
         label = input("Enter the name/label for your password: ")
         description = input("Enter a description for your password (can be left blank): ")
