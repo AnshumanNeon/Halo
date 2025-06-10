@@ -30,6 +30,8 @@ def create_user(cursor):
 
     print("User creation successful!")
 
+    if input("Continue..."): return
+
 def login(cursor):
     username = input("Enter username: ")
     password = input("Enter password: ")
@@ -57,6 +59,7 @@ def login(cursor):
         return (True, get_user_vault_key(cursor, username, password))
 
     print("Wrong password or username, try again")
+
     return (False, -1)
 
 def get_user_vault_key(cursor, username, password):

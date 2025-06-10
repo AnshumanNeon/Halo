@@ -1,3 +1,4 @@
+import os
 from cryptography.hazmat.primitives.kdf.argon2 import Argon2id
 
 def hash_without_salt(password):

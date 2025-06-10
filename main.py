@@ -45,6 +45,7 @@ def entry_options():
         x = login(cursor)
         LOGGED = x[0]
         data = x[1]
+        if input("Continue..."): return
     elif choice == 2:
         create_user(cursor)
         connector.commit()
@@ -69,6 +70,7 @@ def usage_options():
 
     if choice == 1:
         show_all_passwords(cursor, data[0])
+        if input("Continue..."): return
     elif choice == 2:
         label = input("Enter the name/label for your password: ")
         get_password(cursor, data[1], label, data[0])
@@ -93,8 +95,13 @@ def usage_options():
         if confirm == "y":
             cursor.execute("delete from passwords where label=%s", (label,))
             connector.commit()
+
+            print("Deleted the password successfully.")
+
+            if input("Continue..."): return
         elif confirm != "y" and confirm != "n":
             print("please enter a valid choice. quitting deletion process...")
+            if input("Continue..."): return
     elif choice == 5:
         confirm = input("All your saved passwords will be deleted. Are you sure you want to delete this user? (y/n) ")
 
@@ -104,18 +111,25 @@ def usage_options():
             cursor.execute("delete from users where userid=%s", (data[0],))
             connector.commit()
             LOGGED = False
+
+            if input("Continue..."): return
         elif confirm != "y" and confirm != "n":
             print("please enter a valid choice. quitting account deletion process...")
+
+            if input("Continue..."): return
+
     elif choice == 6:
         LOGGED = False
-            
+        
 while True:
     if not LOGGED and QUIT_FLAG:
         sys.exit(0)
     elif not LOGGED and not QUIT_FLAG:
+        os.system("clear || cls")
         entry_options()
         
     if LOGGED:
+        os.system("clear || cls")
         usage_options()
     elif not LOGGED:
         data = []
