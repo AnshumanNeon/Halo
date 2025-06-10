@@ -88,7 +88,7 @@ def usage_options():
             print("Not a valid label. quitting deletion process...")
             return
         
-        confirm = input("Are you sure you want to delete the password? (y/n)")
+        confirm = input("Are you sure you want to delete the password? (y/n) ")
 
         if confirm == "y":
             cursor.execute("delete from passwords where label=%s", (label,))
