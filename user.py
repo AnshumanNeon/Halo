@@ -22,7 +22,7 @@ def create_user(cursor):
 
     # create a master password hash
 
-    master_password_hash = hash_with_salt(master_key, master_password)
+    master_password_hash = hash_with_salt(master_key, master_password.encode("utf-8"))
 
     # enter into the mysql table
 
@@ -41,11 +41,11 @@ def login(cursor):
     if len(x) <= 0:
         print("No user by this name.")
         return (False, -1)
-    
-    psw_hash = cursor.fetchall()[0][0]
 
-    tmp_master_key = hash_without_salt(password)
-    tmp_psw_hash = hash_with_salt(tmp_master_key, password)
+    psw_hash = x[0][0]
+
+    tmp_master_key = hash_without_salt(password.encode("utf-8"))
+    tmp_psw_hash = hash_with_salt(tmp_master_key, password.encode("utf-8"))
 
     if psw_hash == tmp_psw_hash:
         print("Successful Login!")
@@ -70,7 +70,7 @@ def get_user_vault_key(cursor, username, password):
     nonce = x[2]
     userid = x[3]
 
-    master_key = hash_without_salt(password)
+    master_key = hash_without_salt(password.encode("utf-8"))
 
     # retrieve vault key
     aes = AESGCM(master_key)
