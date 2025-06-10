@@ -1,10 +1,11 @@
 from hash import *
 import os
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+import getpass
 
 def create_user(cursor):
     username = input("Enter username: ")
-    master_password = input("Enter password: ")
+    master_password = getpass.getpass("Enter password: ")
 
     # create a userid
 
@@ -34,7 +35,7 @@ def create_user(cursor):
 
 def login(cursor):
     username = input("Enter username: ")
-    password = input("Enter password: ")
+    password = getpass.getpass("Enter password: ")
 
     cursor.execute("select master_password_hash from users where username=%s", (username, ))
 
