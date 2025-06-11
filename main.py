@@ -148,15 +148,6 @@ def usage_options():
 
 # run an infinite loop
 while True:
-    if not LOGGED and QUIT_FLAG:
-        # if the user is not logged in and wants to quit, then quit
-        sys.exit(0)
-    elif not LOGGED and not QUIT_FLAG:
-        # if the user is not logged in and does not want to quit, then clear
-        # the screen and display the entry options
-        os.system("clear || cls")
-        entry_options()
-
     if LOGGED:
         # if the user is logged in then clear the screen and display the usage option
         os.system("clear || cls")
@@ -164,3 +155,12 @@ while True:
     elif not LOGGED:
         # if the user is not logged in then keep the data list empty
         data = []
+        
+        if not LOGGED and QUIT_FLAG:
+            # if the user is not logged in and wants to quit, then quit
+            sys.exit(0)
+        elif not LOGGED and not QUIT_FLAG:
+            # if the user is not logged in and does not want to quit, then clear
+            # the screen and display the entry options
+            os.system("clear || cls")
+            entry_options()
