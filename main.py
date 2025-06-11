@@ -124,7 +124,7 @@ def usage_options():
         label = input("Enter the name/label: ")
 
         # select the password
-        cursor.execute("select * from passwords where label=%s;", (label,))
+        cursor.execute("select * from passwords where label=%s and userid=%s;", (label, data[0]))
 
         # fetch the result
         h = cursor.fetchall()
@@ -140,7 +140,7 @@ def usage_options():
         if confirm == "y":
             # if the user wants to delete:
             # run the query to delete the password
-            cursor.execute("delete from passwords where label=%s", (label,))
+            cursor.execute("delete from passwords where label=%s and userid=%s;", (label, data[0]))
 
             # commit the changes to the database
             connector.commit()
