@@ -80,7 +80,10 @@ def entry_options():
         print("Please enter a valid option.")
 
 def usage_options():
+    # get the global flag
     global LOGGED
+
+    # print the tui (terminal user interface)
     print("Options:\n")
     print("------------------------------------\n")
     print("1) See all passwords")
@@ -91,59 +94,98 @@ def usage_options():
     print("6) Logout")
     print("------------------------------------\n")
 
+    # get the user input
     choice = int(input(">>> "))
 
     if choice == 1:
+        # show all the passwords
         show_all_passwords(cursor, data[0])
         if input("Continue..."): return
     elif choice == 2:
+        # get a certain password by its label
         label = input("Enter the name/label for your password: ")
         get_password(cursor, data[1], label, data[0])
     elif choice == 3:
+        # create a new password
+
+        # get label and description
         label = input("Enter the name/label for your password: ")
         description = input("Enter a description for your password (can be left blank): ")
+
+        # create the passwords
         create_new_password(cursor, data[1], data[0], label, description)
+
+        # commit the changes to the database
         connector.commit()
     elif choice == 4:
+        # delete a password by label
+
+        # get the label
         label = input("Enter the name/label: ")
 
+        # select the password
         cursor.execute("select * from passwords where label=%s;", (label,))
 
+        # fetch the result
         h = cursor.fetchall()
 
+        # check for the validity of the results
         if len(h) <= 0:
             print("Not a valid label. quitting deletion process...")
             return
-        
+
+        # confirm the deletion
         confirm = input("Are you sure you want to delete the password? (y/n) ")
 
         if confirm == "y":
+            # if the user wants to delete:
+            # run the query to delete the password
             cursor.execute("delete from passwords where label=%s", (label,))
+
+            # commit the changes to the database
             connector.commit()
 
             print("Deleted the password successfully.")
 
             if input("Continue..."): return
         elif confirm != "y" and confirm != "n":
+            # invalid input
             print("please enter a valid choice. quitting deletion process...")
             if input("Continue..."): return
     elif choice == 5:
+        # delete the user
+
+        # pose the warning that all the passwords associated will be deleted
+        # as well with the user and take the input
         confirm = input("All your saved passwords will be deleted. Are you sure you want to delete this user? (y/n) ")
 
         if confirm == "y":
+            # if the user wants to delete
+
+            # run the query to delete all the passwords related to the current
+            # logged in user
             cursor.execute("delete from passwords where userid=%s", (data[0],))
+
+            # commit the changes to the database
             connector.commit()
+
+            # run the query to delete the current logged in user
             cursor.execute("delete from users where userid=%s", (data[0],))
+
+            # commit the changes to the database
             connector.commit()
+
+            # log out by updating the LOGGED flag
             LOGGED = False
 
             if input("Continue..."): return
         elif confirm != "y" and confirm != "n":
+            # invalid input
             print("please enter a valid choice. quitting account deletion process...")
 
             if input("Continue..."): return
-
     elif choice == 6:
+        # log out but updating the LOGGED flag
         LOGGED = False
 
 # run an infinite loop
